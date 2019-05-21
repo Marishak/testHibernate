@@ -1,8 +1,6 @@
 import Utils.HibernateUtil;
 import entity.*;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class Main {
@@ -21,19 +19,24 @@ public class Main {
         actor.setId(12L);
 
         System.out.println("Create cast");
-        Cast cast = new Cast();
-        cast.setVideo(video);
-        cast.setActor(actor);
-        cast.setId(10L);
+        Cast1 cast1 = new Cast1();
+        cast1.setId(10L);
+        cast1.setVideo(video);
+        cast1.setActor(actor);
 
         System.out.println("Create Session");
         Session session = HibernateUtil.getSessionFactory().openSession();
         System.out.println("Добавление записи в таблицу БД");
         Transaction tr = session.beginTransaction();
-        session.save(video);
-        session.save(actor);
-        session.save(cast);
+        System.out.println("Транзакцию воткнули");
+        session.saveOrUpdate(video);
+        session.saveOrUpdate(actor);
+        System.out.println("ПЕРЕД CAST сэйв/апдейт");
+        session.saveOrUpdate(cast1);
+        System.out.println("Момент перед коммитом");
         tr.commit();
+        System.out.println("После коммита");
         session.close();
+        System.out.println("THE END");
     }
 }
